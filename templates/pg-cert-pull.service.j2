@@ -1,0 +1,12 @@
+{{ ansible_managed | comment }}
+
+[Unit]
+Description=Pull SSL certificates from PostgreSQL
+Requires=network-online.target
+After=network-online.target
+
+[Service]
+ExecStart=/usr/local/bin/pg-cert-pull-systemd
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,8 @@
+[Unit]
+Description=Periodically pull certificates from PostgreSQL
+
+[Timer]
+OnCalendar={{ pg_cert_pull_oncalendar }}
+
+[Install]
+WantedBy=timers.target

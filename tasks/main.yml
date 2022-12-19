@@ -1,0 +1,55 @@
+---
+
+- name: Include OS-specific variables.
+  ansible.builtin.include_vars: "{{ ansible_os_family }}.yml"
+  tags: ["install"]
+
+- name: Install requirements using package manager
+  ansible.builtin.package:
+    name: "{{ pg_cert_packages }}"
+    state: present
+  tags: ["install"]
+
+- name: Install pg-cert-store using pip
+  ansible.builtin.pip:
+    # Avoid git dependency
+    name: "https://github.com/cosandr/pg-cert-store/archive/master.zip"
+    state: present
+    extra_args: >
+      --no-deps
+      --prefix=/usr/local
+  tags: ["install"]
+
+- name: Ensure config dir exists
+  ansible.builtin.file:
+    path: "{{ pg_cert_config_path }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+  tags: ["config"]
+
+- name: Copy config file
+  ansible.builtin.template:
+    src: config.conf.j2
+    dest: "{{ pg_cert_config_path }}/config.conf"
+    owner: root
+    group: root
+    mode: 0600
+  tags: ["config"]
+
+- name: Include pull tasks
+  ansible.builtin.include_tasks:
+    file: pull.yml
+    apply:
+      tags: ["cert-pull"]
+  when: pg_cert_pull | length > 0
+  tags: ["cert-pull"]
+
+- name: Include hook tasks
+  ansible.builtin.include_tasks:
+    file: hooks.yml
+    apply:
+      tags: ["cert-pull", "hooks"]
+  when: pg_cert_pull_hooks | length > 0
+  tags: ["cert-pull", "hooks"]

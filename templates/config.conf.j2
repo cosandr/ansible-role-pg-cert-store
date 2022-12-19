@@ -1,0 +1,10 @@
+{{ ansible_managed | comment }}
+[pgsql]
+host={{ pg_cert_pg_host }}
+dbname={{ pg_cert_pg_db }}
+user={{ pg_cert_pg_user }}
+password={{ pg_cert_pg_password }}
+
+[pg_sync]
+schema={{ pg_cert_pg_schema }}
+hooks_dir={{ pg_cert_hooks_dir }}

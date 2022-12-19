@@ -1,0 +1,43 @@
+---
+
+- name: Ensure hooks dir exists
+  ansible.builtin.file:
+    path: "{{ pg_cert_hooks_dir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Register previously copied configuration files
+  ansible.builtin.find:
+    paths: "{{ pg_cert_hooks_dir }}"
+  register: __pg_cert_present
+  when: pg_cert_pull_hooks_sync
+
+- name: Copy hooks
+  ansible.builtin.copy:
+    content: "{{ item.content }}"
+    dest: "{{ pg_cert_hooks_dir }}/{{ item.name }}"
+    owner: root
+    group: root
+    mode: 0750
+  register: __pg_cert_copied
+  loop: "{{ pg_cert_pull_hooks }}"
+  loop_control:
+    label: "{{ item.name }}"
+
+- name: Set list facts
+  ansible.builtin.set_fact:
+    __pg_cert_present_list: "{{ __pg_cert_present | json_query('files[*].path') | default([]) }}"
+    __pg_cert_copied_list: "{{ __pg_cert_copied_tmp + __pg_cert_copied_tmp_check }}"
+  vars:
+    __pg_cert_copied_tmp: "{{ __pg_cert_copied.results | json_query('[*].dest') | default([]) }}"
+    __pg_cert_copied_tmp_check: "{{ __pg_cert_copied.results | json_query('[*].invocation.dest') | default([]) }}"
+  when: pg_cert_pull_hooks_sync
+
+- name: Remove hooks not present on deployer machine
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  loop: "{{ __pg_cert_present_list | difference(__pg_cert_copied_list) }}"
+  when: pg_cert_pull_hooks_sync

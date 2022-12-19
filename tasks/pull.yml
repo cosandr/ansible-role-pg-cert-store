@@ -1,0 +1,30 @@
+---
+
+- name: Install pull script
+  ansible.builtin.template:
+    src: pg-cert-pull-systemd.sh.j2
+    dest: /usr/local/bin/pg-cert-pull-systemd
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Copy service and timer
+  ansible.builtin.template:
+    src: "pg-cert-pull.{{ item }}.j2"
+    dest: "/etc/systemd/system/pg-cert-pull.{{ item }}"
+    owner: root
+    group: root
+    mode: 0644
+  loop:
+    - service
+    - timer
+  notify: Reload systemd
+
+- name: Flush handlers
+  ansible.builtin.meta: flush_handlers
+
+- name: Enable and start timer
+  ansible.builtin.systemd:
+    name: pg-cert-pull.timer
+    state: started
+    enabled: true

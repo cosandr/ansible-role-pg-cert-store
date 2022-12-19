@@ -1,0 +1,6 @@
+---
+
+pg_cert_packages:
+  - python-pip
+  - python-cryptography
+  - python-psycopg2
