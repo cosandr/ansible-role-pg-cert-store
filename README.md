@@ -55,6 +55,13 @@ Example Playbook
               #!/bin/sh
 
               systemctl restart nginx
+
+          - name: only-once
+            disabled: "{{ inventory_hostname != groups['example'][0] }}"
+            content: |
+              #!/bin/sh
+
+              echo "I will only run on one host"
 ```
 
 License

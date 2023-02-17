@@ -6,7 +6,7 @@
     state: directory
     owner: root
     group: root
-    mode: 0755
+    mode: "0755"
 
 - name: Register previously copied configuration files
   ansible.builtin.find:
@@ -20,7 +20,7 @@
     dest: "{{ pg_cert_hooks_dir }}/{{ item.name }}"
     owner: root
     group: root
-    mode: 0750
+    mode: "{{ '0640' if item.disabled | default(false) else '0750' }}"
   register: __pg_cert_copied
   loop: "{{ pg_cert_pull_hooks }}"
   loop_control:
