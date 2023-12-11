@@ -28,6 +28,7 @@ Role Variables
 | `pg_cert_pull_hooks` | [] | List of dicts defining hooks, see playbook |
 | `pg_cert_hooks_dir` | /etc/pg-cert-store/hooks.d | Path to deploy hooks |
 | `pg_cert_pull_hooks_sync` | true | Whether or not to delete hooks no longer defined in `pg_cert_pull_hooks` |
+| `pg_cert_pull_pre_script` | "" | Raw string inserted before pull script is run |
 
 Example Playbook
 ----------------

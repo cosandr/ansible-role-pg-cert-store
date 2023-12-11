@@ -18,3 +18,5 @@ pg_cert_pg_schema: "public"
 pg_cert_pull_oncalendar: "*-*-* 04:00:00"
 pg_cert_pull_hooks_sync: true
 pg_cert_pull_hooks: []
+
+pg_cert_pull_pre_script: ""

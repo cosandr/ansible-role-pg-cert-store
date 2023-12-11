@@ -2,6 +2,9 @@
 
 {{ ansible_managed | comment }}
 
+{{ pg_cert_pull_pre_script }}
+
+
 {% for c in pg_cert_pull %}
 {% set public_path = c.cert_path | default(pg_cert_default_cert_path + '/' + c.name + '.crt') %}
 {% set private_path = c.key_path | default(pg_cert_default_key_path + '/' + c.name + '.key') %}
