@@ -43,8 +43,12 @@ Example Playbook
           - name: "example.com"
             cert_path: "/etc/nginx/example.crt"
             key_path: "/etc/nginx/example.key"
+            chain_path: "/etc/nginx/example.chain.crt"
             owner: root
             group: nginx
+            public_mode: "0644"
+            private_mode: "0640"
+            chain_mode: "0644"
           # If cert_path or key_path are not specified
           # cert is placed at "{{ pg_cert_default_cert_path }}/{{ c.name }}.crt"
           # key is placed at "{{ pg_cert_default_key_path }}/{{ c.name }}.key"
