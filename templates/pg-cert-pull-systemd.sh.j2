@@ -27,7 +27,7 @@ if [[ $tmp_exit -eq 0 ]]; then
     chmod {{ c.public_mode | default('0644') }} "{{ public_path }}"
     chmod {{ c.private_mode | default('0640') }} "{{ private_path }}"
     {% if chain_path %}
-    chown "{{ c.owner | default(pg_cert_default_owner) }}":"{{ c.group | default(pg_cert_default_group) }}"
+    chown "{{ c.owner | default(pg_cert_default_owner) }}":"{{ c.group | default(pg_cert_default_group) }}" "{{ chain_path }}"
     chmod {{ c.chain_mode | default('0644') }} "{{ chain_path }}"
 fi
 {% endif %}
