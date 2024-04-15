@@ -24,18 +24,18 @@
   ansible.builtin.file:
     path: "{{ pg_cert_config_path }}"
     state: directory
-    owner: root
-    group: root
-    mode: 0755
+    owner: "{{ pg_cert_config_owner }}"
+    group: "{{ pg_cert_config_group }}"
+    mode: "0755"
   tags: ["config"]
 
 - name: Copy config file
   ansible.builtin.template:
     src: config.conf.j2
     dest: "{{ pg_cert_config_path }}/config.conf"
-    owner: root
-    group: root
-    mode: 0600
+    owner: "{{ pg_cert_config_owner }}"
+    group: "{{ pg_cert_config_group }}"
+    mode: "{{ pg_cert_config_mode }}"
   tags: ["config"]
 
 - name: Include pull tasks

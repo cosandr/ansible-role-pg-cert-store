@@ -20,3 +20,7 @@ pg_cert_pull_hooks_sync: true
 pg_cert_pull_hooks: []
 
 pg_cert_pull_pre_script: ""
+
+pg_cert_config_owner: "root"
+pg_cert_config_group: "root"
+pg_cert_config_mode: "0600"
