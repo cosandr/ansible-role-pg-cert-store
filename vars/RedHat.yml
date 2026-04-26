@@ -4,3 +4,5 @@ pg_cert_packages:
   - python3-pip
   - python3-cryptography
   - python3-psycopg2
+
+pg_cert_prefix: /usr/local

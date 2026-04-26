@@ -17,7 +17,7 @@
     state: present
     extra_args: >
       --no-deps
-      --prefix=/usr/local
+      --prefix={{ pg_cert_prefix }}
   tags: ["install"]
 
 - name: Ensure config dir exists
